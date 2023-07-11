@@ -47,6 +47,13 @@ app.post('/ask', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+  
+  // ...
+  
+  app.all('/ask', (req, res) => {
+    res.status(405).json({ error: 'Method Not Allowed' });
+  });
+  
 
 // Start the server
 const port = process.env.PORT || 3000;
