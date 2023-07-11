@@ -13,7 +13,6 @@ app.use(cors());
 // Middleware to parse JSON request body
 app.use(express.json());
 
-// Handle POST request to /ask endpoint
 app.post('/ask', async (req, res) => {
     const { question, url } = req.body; // Access the URL from the request payload
   
@@ -28,11 +27,21 @@ app.post('/ask', async (req, res) => {
       // Include the text in the prompt for question-answering
       const prompt = `${text}\n\nQ: ${question}\nA:`;
   
-      // Perform the question-answering process using OpenAI or any other API
-      // ...
+      // Call the OpenAI API to get the answer
+      const openAIResponse = await axios.post('https://api.openai.com/v1/engines/text-davinci-003/completions', {
+        prompt,
+        max_tokens: 200,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        },
+      });
   
-      // Send the response back to the client
-      res.json({ answer: 'Answer goes here' });
+      const answer = openAIResponse.data.choices[0].text.trim();
+  
+      // Send the answer back to the client
+      res.json({ answer });
     } catch (error) {
       console.error('Error:', error.message);
       res.status(500).json({ error: 'Internal server error' });
