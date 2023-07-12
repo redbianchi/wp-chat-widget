@@ -25,7 +25,7 @@ app.post('/ask-question', async (req, res) => {
     const prompt = `I read this article: ${content}. ${question}`;
   
     try {
-        const gptResponse = await axios.post('https://api.openai.com/v1/engines/gpt-3.5-turbo/completions', {
+        const gptResponse = await axios.post('https://api.openai.com/v1/engines/text-davinci-003/completions', {
             prompt: prompt,
             max_tokens: 200
         }, {
@@ -35,7 +35,7 @@ app.post('/ask-question', async (req, res) => {
             }
         });
 
-        res.send(gptResponse.data.choices[0].text.strip());
+        res.send(gptResponse.data.choices[0].text.trim());
     } catch (error) {
         console.error(error);
         res.status(500).send('An error occurred while processing your request.');
