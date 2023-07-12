@@ -7,10 +7,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.post('/submit-url', (req, res) => {
-  const { url } = req.body;
+    const { url, content } = req.body;
   // Process the URL or perform any desired actions with it
   console.log('Received URL:', url);
-  res.send('URL received');
+  console.log('Received content:', content);
+  res.send('URL and content received');
 });
 
 
