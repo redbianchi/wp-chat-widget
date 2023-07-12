@@ -22,7 +22,7 @@ app.post('/submit-url', (req, res) => {
 
 app.post('/ask-question', async (req, res) => {
     const { content, question } = req.body;
-    const prompt = `I read this article: ${content}. ${question}`;
+    const prompt = `I've just read the 5 key insights from a non-fiction book. ere they are: ${content}. Now, to answer your question: ${question}`;
   
     try {
         const gptResponse = await axios.post('https://api.openai.com/v1/engines/text-davinci-003/completions', {
