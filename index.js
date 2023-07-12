@@ -9,12 +9,10 @@ app.post('/submit-url', (req, res) => {
   const { url } = req.body;
   // Process the URL or perform any desired actions with it
   console.log('Received URL:', url);
-  res.sendStatus(200);
+  res.send('URL received');
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+
 
   
 
