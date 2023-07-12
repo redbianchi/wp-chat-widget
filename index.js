@@ -2,11 +2,12 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const openai = require('openai');
+const axios = require('axios');
 const app = express();
 
 app.use(cors());
 
-openai.apiKey = process.env.OPENAI_API_KEY;
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -24,18 +25,22 @@ app.post('/ask-question', async (req, res) => {
     const prompt = `I read this article: ${content}. ${question}`;
   
     try {
-      const gptResponse = await openai.Completion.create({
-        engine: 'text-davinci-002',
-        prompt: prompt,
-        max_tokens: 60
-      });
-  
-      res.send(gptResponse.choices[0].text.strip());
+        const gptResponse = await axios.post('https://api.openai.com/v1/engines/gpt-3.5-turbo/completions', {
+            prompt: prompt,
+            max_tokens: 200
+        }, {
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        res.send(gptResponse.data.choices[0].text.strip());
     } catch (error) {
-      console.error(error);
-      res.status(500).send('An error occurred while processing your request.');
+        console.error(error);
+        res.status(500).send('An error occurred while processing your request.');
     }
-  });
+});
 
   
 
